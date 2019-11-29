@@ -3,12 +3,12 @@
 // Two sum - Easy
 func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
     var map: [Int: [Int]] = [:]
-    nums.enumerated().forEach { (idx, el) in
-        if var arr = map[el] {
-            arr.append(idx)
-            map[el] = arr
+    for i in nums.enumerated() {
+        if var arr = map[i.element] {
+            arr.append(i.offset)
+            map[i.element] = arr
         } else {
-            map[el] = [idx]
+            map[i.element] = [i.offset]
         }
     }
     for (idx, i) in nums.enumerated() {
@@ -85,6 +85,67 @@ func maxArea(_ height: [Int]) -> Int {
     return maxArea
 }
 
-let array = [1,8,6,2,5,4,8,3,7]
-// ER = 49
-print(maxArea(array))
+func testMaxArea() {
+    let array = [1,8,6,2,5,4,8,3,7]
+    // ER = 49
+    print(maxArea(array))
+}
+
+// MARK: - 18.11
+// 3Sum - medium
+func threeSum(_ nums: [Int]) -> [[Int]] {
+
+    // create hashmap of numbers with number of their occurancies
+    var set: [Int: Int] = [:]
+    for i in 0..<nums.count {
+        let curOccur = set[nums[i]] ?? 0
+        if curOccur < 3 {
+            set[nums[i]] = curOccur + 1
+        }
+    }
+
+    // create shrinked version of list where there are only 3 occurancies of every number
+    var numsReduced: [Int] = []
+    for i in set {
+        for _ in 0..<i.value {
+            numsReduced.append(i.key)
+        }
+    }
+    var results = Set<[Int]>()
+    for i in 0..<numsReduced.count {
+        // remove 1 occurancy of current number
+        if let index = set[numsReduced[i]] {
+            set[numsReduced[i]] = index - 1
+        }
+        // iterate over subarray
+        for j in (i + 1)..<numsReduced.count {
+
+            let target = -(numsReduced[j] + numsReduced[i])
+
+            if let numberOfTargetEntries = set[target], numberOfTargetEntries >= 1 {
+                // don't count current second number
+                if target == numsReduced[j] && numberOfTargetEntries == 1 {
+                    continue
+                }
+
+                results.insert([numsReduced[i], numsReduced[j], target].sorted())
+            }
+        }
+    }
+    return Array(results)
+}
+
+func testThreeSum() {
+    let nums = [-1, 0, 1, 2, -1, -4]
+    // ER = [[-1, 0, 1], [-1, -1, 2]]
+    print(threeSum(nums))
+}
+
+//testThreeSum()
+
+
+
+
+
+
+
