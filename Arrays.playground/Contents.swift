@@ -143,6 +143,30 @@ func testThreeSum() {
 
 //testThreeSum()
 
+// MARK: - 30.11
+// Remove duplicates - Easy
+
+func removeDuplicates(_ nums: inout [Int]) -> Int {
+    var i = 0, j = 1
+    while i < nums.count - 1 {
+        if nums[i] != nums[i + 1]  {
+            nums[j] = nums[i + 1]
+            j += 1
+        }
+        i += 1
+    }
+    return nums.isEmpty ? 0 : j
+}
+
+func testRemoveDuplicates() {
+    var nums: [Int] = [0,0,1,1,1,2,2,3,3,4]
+    // ER =  5, [0,1,2,3,4...]
+    print(removeDuplicates(&nums))
+    print(nums)
+}
+
+//testRemoveDuplicates()
+
 
 
 
